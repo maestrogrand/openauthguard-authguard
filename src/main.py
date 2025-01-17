@@ -9,11 +9,12 @@ from src.auth.middleware import JWTValidationMiddleware
 from src.auth.routes.user import router as user_router
 from src.auth.routes.company import router as company_router
 from src.auth.routes.microservice import router as microservice_router
+from src.core.version import SERVICE_VERSION
 
 app = FastAPI(
     title=settings.service_name,
     description="Service for managing authentication and authorization",
-    version="1.0.0",
+    version=SERVICE_VERSION,
 )
 
 app.add_middleware(
@@ -60,7 +61,11 @@ def health_check():
     is_db_connected = check_database_connection()
     status = "connected" if is_db_connected else "not connected"
     logger.info(f"Health check: Database is {status}.")
-    return {"status": "up", "database": status}
+    return {
+        "status": "up",
+        "database": status,
+        "version": SERVICE_VERSION,
+    }
 
 
 @app.get("/")
