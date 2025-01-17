@@ -1,2 +1,2 @@
-# openauthguard-authguard
-OpenAuthGuard Authentication Services
+# OpenAuthGuard Authentication Services
+
