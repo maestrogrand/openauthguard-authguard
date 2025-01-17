@@ -23,13 +23,21 @@ class JWTValidationMiddleware(BaseHTTPMiddleware):
         token = request.headers.get("Authorization")
         if not token or not token.startswith("Bearer "):
             logger.warning("Missing or invalid Authorization header.")
-            raise HTTPException(status_code=403, detail="Authorization token is required.")
+            raise HTTPException(
+                status_code=403, detail="Authorization token is required."
+            )
 
         try:
             token = token.split(" ")[1]
-            payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+            payload = jwt.decode(
+                token, settings.secret_key, algorithms=[settings.algorithm]
+            )
 
-            if "sub" not in payload or "user_id" not in payload or "role" not in payload:
+            if (
+                "sub" not in payload
+                or "user_id" not in payload
+                or "role" not in payload
+            ):
                 logger.warning("Token is missing required claims.")
                 raise HTTPException(status_code=403, detail="Invalid token claims.")
 

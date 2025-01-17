@@ -12,7 +12,9 @@ def get_current_user(token: str = Depends(decode_access_token)) -> dict:
         raise HTTPException(status_code=401, detail="Invalid or missing token.")
 
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=[settings.algorithm]
+        )
         if "sub" not in payload or "user_id" not in payload:
             raise HTTPException(status_code=401, detail="Invalid token payload.")
         return payload

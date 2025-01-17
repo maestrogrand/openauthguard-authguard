@@ -60,10 +60,7 @@ def health_check():
     is_db_connected = check_database_connection()
     status = "connected" if is_db_connected else "not connected"
     logger.info(f"Health check: Database is {status}.")
-    return {
-        "status": "up",
-        "database": status
-    }
+    return {"status": "up", "database": status}
 
 
 @app.get("/")

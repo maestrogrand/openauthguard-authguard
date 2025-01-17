@@ -19,7 +19,9 @@ async def login_user(request: LoginRequest):
     logger.debug(f"Fetched user data: {user_data}")
 
     if not user_data or "password_hash" not in user_data:
-        logger.warning("Invalid user data or missing password hash for user: %s", request.username)
+        logger.warning(
+            "Invalid user data or missing password hash for user: %s", request.username
+        )
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     if not verify_password(request.password, user_data["password_hash"]):

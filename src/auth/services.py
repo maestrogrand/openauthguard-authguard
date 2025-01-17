@@ -1,6 +1,5 @@
 from datetime import timedelta
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
 import os
 
 from src.auth.schemas import CompanyLogin, IndividualLogin, TokenResponse
@@ -20,7 +19,11 @@ async def authenticate_company_user(request: CompanyLogin) -> TokenResponse:
         raise HTTPException(status_code=400, detail="Company not found.")
 
     user = await fetch_user(request.username, USERS_SERVICE_URL)
-    if not user or user["tenant_id"] != tenant["tenant_id"] or not verify_password(request.password, user["password_hash"]):
+    if (
+        not user
+        or user["tenant_id"] != tenant["tenant_id"]
+        or not verify_password(request.password, user["password_hash"])
+    ):
         raise HTTPException(status_code=401, detail="Invalid credentials.")
 
     access_token = create_access_token(
